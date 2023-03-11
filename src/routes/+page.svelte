@@ -1,8 +1,15 @@
 <script lang="ts">
     import { invoke } from "@tauri-apps/api/tauri";
+    import { fileContent } from "./stores";
     
+    let editorText = "";
+    fileContent.subscribe((text) => {
+        editorText = text;
+    });
+
     let name: string = "";
     let greetMsg: string = "";
+
 </script>
 
 <main class="main-class">
@@ -19,6 +26,7 @@
         }}>Clear</button
     >
     <span>{greetMsg}</span>
+    <textarea name="" id="" cols="30" rows="10" bind:value={editorText} />
 </main>
 
 <style>
