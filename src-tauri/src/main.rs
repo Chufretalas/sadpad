@@ -4,6 +4,7 @@
 )]
 
 use native_dialog::{FileDialog, MessageDialog, MessageType};
+use std::fs;
 
 fn main() {
 
@@ -20,7 +21,7 @@ fn greet(name: &str) -> String {
 
 
 #[tauri::command]
-fn open_file() -> String {
+fn open_file() -> String { //TODO: return the file path as well so the changes can be saved
     let path = FileDialog::new()
     .set_location("~/Desktop")
     .add_filter("text file", &["txt"])
@@ -28,7 +29,9 @@ fn open_file() -> String {
     .unwrap();
 
     match path {
-        Some(p) => p.to_str().unwrap().to_string(),
+        Some(p) => {
+            fs::read_to_string(p).unwrap() //TODO: error treat this
+        },
         None => "".to_string()
     }
 }

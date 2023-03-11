@@ -3,10 +3,11 @@
     import "./styles.css"
 
     import { invoke } from "@tauri-apps/api/tauri";
+    import { fileContent } from "./stores";
 
     async function openFile() {
-        const path = await invoke("open_file")
-        console.log(path)
+        const content: string = await invoke("open_file")
+        fileContent.set(content)
     }
 
 </script>
