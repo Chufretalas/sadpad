@@ -3,17 +3,21 @@
     import "./styles.css"
 
     import { invoke } from "@tauri-apps/api/tauri";
-    import { fileContent } from "./stores";
+    import { filePath, fileContent } from "./stores";
 
     async function openFile() {
-        const content: string = await invoke("open_file")
-        fileContent.set(content)
+        const openedFile: string[] = await invoke("open_file")
+        filePath.set(openedFile[0])
+        fileContent.set(openedFile[1])
     }
 
 </script>
 
 <header>
-    <button class="menu-button" on:click={openFile}>Open file</button>
+    <section class="menu-buttons">
+        <button class="menu-button" on:click={openFile}>Open file</button>
+    </section>
+    <h2 class="file-name">{$filePath}</h2>
 </header>
 <slot/>
 
@@ -23,7 +27,11 @@
         box-shadow: 0 3px 10px 2px #182228;
         margin-bottom: 10px;
         padding: 1px;
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+        grid-template-rows: 1fr;
     }
+
     .menu-button {
         border: none;
         border-radius: 5px;
@@ -41,5 +49,9 @@
     .menu-button:active {
         transform: scale(0.95);
         background-color: rgb(100, 100, 100);
+    }
+
+    .file-name {
+        justify-self: center;
     }
 </style>

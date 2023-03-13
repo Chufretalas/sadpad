@@ -2,15 +2,10 @@
     import { invoke } from "@tauri-apps/api/tauri";
     import { fileContent } from "./stores";
 
-    let editorText = "";
-    fileContent.subscribe((text) => {
-        editorText = text;
-    });
-    
 </script>
 
 <main class="main-class">
-    <textarea name="" id="" cols="30" rows="10" bind:value={editorText} />
+    <textarea name="" id="" cols="30" rows="10" bind:value={$fileContent} />
 </main>
 
 <style>
