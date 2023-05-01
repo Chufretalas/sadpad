@@ -38,23 +38,24 @@ fn open_file() -> (String, String) {
 }
 
 #[tauri::command]
-fn save_file(path_str: &str, content: &str) -> bool {
-    dbg!(path_str);
-    dbg!(content);
+fn save_file(path_str: &str, content: &str) -> String {
     let has_file_open = Path::new(path_str).exists();
     let final_path;
     if !has_file_open {
         let result = FileDialog::new()
             .set_location("~/Desktop")
+            .add_filter("text file", &["txt"])
             .show_save_single_file()
             .unwrap();
         match result {
             Some(p) => final_path = p,
-            None => return false,
+            None => return "".to_string(),
         }
     } else {
         final_path = PathBuf::from_str(path_str).unwrap();
     }
-    dbg!(final_path);
-    true
+
+    fs::write(&final_path, content).unwrap();
+
+    format!("{:?}", final_path.as_path())
 }

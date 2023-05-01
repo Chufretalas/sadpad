@@ -17,12 +17,13 @@
     }
 
     async function saveFile() {
-        console.log("oiiii");
-        const saved = await invoke("save_file", {
+        const savedPath = await invoke("save_file", {
             pathStr: $filePath.replaceAll('"', "").replaceAll("\\\\", "\\"),
             content: $fileContent,
         });
-        console.log(saved)
+        if (savedPath !== "") {
+            $filePath = savedPath as string;
+        }
     }
 </script>
 
