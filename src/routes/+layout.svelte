@@ -1,25 +1,40 @@
 <script lang="ts">
-    import "./reset.css"
-    import "./styles.css"
+    import "./reset.css";
+    import "./styles.css";
 
     import { invoke } from "@tauri-apps/api/tauri";
     import { filePath, fileContent } from "./stores";
 
-    async function openFile() {
-        const openedFile: string[] = await invoke("open_file")
-        filePath.set(openedFile[0])
-        fileContent.set(openedFile[1])
+    async function openNew() {
+        $filePath = "new file";
+        $fileContent = "";
     }
 
+    async function openFile() {
+        const openedFile: string[] = await invoke("open_file");
+        filePath.set(openedFile[0]);
+        fileContent.set(openedFile[1]);
+    }
+
+    async function saveFile() {
+        console.log("oiiii");
+        const saved = await invoke("save_file", {
+            pathStr: $filePath.replaceAll('"', "").replaceAll("\\\\", "\\"),
+            content: $fileContent,
+        });
+        console.log(saved)
+    }
 </script>
 
 <header>
     <section class="menu-buttons">
+        <button class="menu-button" on:click={openNew}>New file</button>
         <button class="menu-button" on:click={openFile}>Open file</button>
+        <button class="menu-button" on:click={saveFile}>Save</button>
     </section>
     <h2 class="file-name">{$filePath}</h2>
 </header>
-<slot/>
+<slot />
 
 <style>
     header {
@@ -30,6 +45,10 @@
         display: grid;
         grid-template-columns: 1fr 3fr 1fr;
         grid-template-rows: 1fr;
+    }
+    .menu-buttons {
+        display: flex;
+        gap: 0.2rem;
     }
 
     .menu-button {

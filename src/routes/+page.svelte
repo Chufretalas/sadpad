@@ -17,4 +17,9 @@
         row-gap: 1rem;
         font-size: 2rem;
     }
+
+    textarea {
+        width: 90%;
+        height: 90%;
+    }
 </style>

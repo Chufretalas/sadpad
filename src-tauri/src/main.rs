@@ -5,10 +5,12 @@
 
 use native_dialog::{FileDialog, MessageDialog, MessageType};
 use std::fs;
+use std::path::{Path, PathBuf};
+use std::str::FromStr;
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet, open_file])
+        .invoke_handler(tauri::generate_handler![greet, open_file, save_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -29,11 +31,30 @@ fn open_file() -> (String, String) {
 
     match path {
         Some(p) => {
-            (
-                format!("{:?}", p.as_os_str()),
-                fs::read_to_string(p).unwrap(),
-            ) //TODO: error treat this
+            (format!("{:?}", p.as_path()), fs::read_to_string(p).unwrap()) //TODO: error treat this
         }
         None => ("".to_string(), "".to_string()),
     }
+}
+
+#[tauri::command]
+fn save_file(path_str: &str, content: &str) -> bool {
+    dbg!(path_str);
+    dbg!(content);
+    let has_file_open = Path::new(path_str).exists();
+    let final_path;
+    if !has_file_open {
+        let result = FileDialog::new()
+            .set_location("~/Desktop")
+            .show_save_single_file()
+            .unwrap();
+        match result {
+            Some(p) => final_path = p,
+            None => return false,
+        }
+    } else {
+        final_path = PathBuf::from_str(path_str).unwrap();
+    }
+    dbg!(final_path);
+    true
 }
