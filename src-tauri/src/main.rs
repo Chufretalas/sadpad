@@ -3,7 +3,7 @@
     windows_subsystem = "windows"
 )]
 
-use native_dialog::{FileDialog, MessageDialog, MessageType};
+use native_dialog::{FileDialog};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
@@ -38,7 +38,7 @@ fn open_file() -> (String, String) {
 }
 
 #[tauri::command]
-fn save_file(path_str: &str, content: &str) -> String {
+fn save_file(path_str: &str, content: &str) -> String { // returns "" if nothing gets saved
     let has_file_open = Path::new(path_str).exists();
     let final_path;
     if !has_file_open {
