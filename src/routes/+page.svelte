@@ -13,18 +13,20 @@
     async function openFile() {
         const openedFile: string[] = await invoke("open_file");
         if (openedFile[0] !== "") {
-            filePath.set(openedFile[0]);
+            filePath.set(openedFile[0].replaceAll('"', "").replaceAll("\\\\", "\\"));
             fileContent.set(openedFile[1]);
         }
     }
 
     async function saveFile() {
+        // console.log("filepath: ", $filePath)
         const savedPath = await invoke("save_file", {
-            pathStr: $filePath.replaceAll('"', "").replaceAll("\\\\", "\\"),
+            pathStr: $filePath,
             content: $fileContent,
         });
+        // console.log("savedpath: ", savedPath)
         if (savedPath !== "") {
-            $filePath = savedPath as string;
+            $filePath = (savedPath as string).replaceAll('"', "").replaceAll("\\\\", "\\");
             saved = true;
         }
     }

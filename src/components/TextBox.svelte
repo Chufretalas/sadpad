@@ -29,5 +29,6 @@
     textarea {
         width: 90vw;
         height: 90vh;
+        resize: none;
     }
 </style>
