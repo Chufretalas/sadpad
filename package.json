@@ -1,6 +1,6 @@
 {
 	"name": "sadpad",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"private": true,
 	"scripts": {
 		"tauri-dev": "tauri dev",
@@ -15,7 +15,7 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-static": "^1.0.0-next.50",
 		"@sveltejs/kit": "^1.5.0",
-		"@tauri-apps/cli": "^1.2.3",
+		"@tauri-apps/cli": "^1.4.0",
 		"svelte": "^3.54.0",
 		"svelte-check": "^3.0.1",
 		"tslib": "^2.4.1",
@@ -24,6 +24,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@tauri-apps/api": "^1.2.0"
+		"@tauri-apps/api": "^1.4.0"
 	}
 }
